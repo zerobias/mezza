@@ -21,7 +21,6 @@
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^20.0.2",
-    "@types/typescript": "^2.0.0",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
