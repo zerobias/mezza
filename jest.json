@@ -1,8 +1,10 @@
 {
   "collectCoverage": true,
+  "coverageDirectory": "coverage",
   "coverageReporters": [
     "text",
-    "text-summary"
+    "text-summary",
+    "html"
   ],
   "transform": {
     "^.+\\.jsx?$": "babel-jest"

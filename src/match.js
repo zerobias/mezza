@@ -1,8 +1,39 @@
 //@flow
 
+import { curry } from './util'
+
 type Pred = (val: mixed) => boolean
 
-function plainMatch<V, M: { [key: *]: V }, K: $Keys<M> | '_'>(
+interface Match {
+  <V, M: { [key: *]: V }, K: $Keys<M> | '_'>(
+    matchBy: $ObjMap<M, (val: V) => Pred>,
+    value: mixed
+  ): $Keys<M>,
+  <V, M: { [key: *]: V }, K: $Keys<M> | '_'>(
+    matchBy: $ObjMap<M, (val: V) => Pred>):
+    (value: mixed) => $Keys<M>
+}
+
+interface Remap {
+  < T: { [key: string]: Pred },
+    V,
+    M: { [key: $Keys<T>]: V }
+  >(matchBy: T, mapper: M, value: mixed): V,
+  < T: { [key: string]: Pred },
+    V,
+    M: { [key: $Keys<T>]: V }
+  >(matchBy: T, mapper: M): (value: mixed) => V,
+  < T: { [key: string]: Pred },
+    V,
+    M: { [key: $Keys<T>]: V }
+  >(matchBy: T): (mapper: M, value: mixed) => V,
+  < T: { [key: string]: Pred },
+    V,
+    M: { [key: $Keys<T>]: V }
+  >(matchBy: T): (mapper: M) => (value: mixed) => V,
+}
+
+const match: Match = curry(function match<V, M: { [key: *]: V }, K: $Keys<M> | '_'>(
   matchBy: $ObjMap<M, (val: V) => Pred>,
   value: mixed
 ): $Keys<M> {
@@ -19,24 +50,23 @@ function plainMatch<V, M: { [key: *]: V }, K: $Keys<M> | '_'>(
       return key
   }
   return '_'
-}
+})
 
-function match<T: { [key: string]: Pred }>(matchBy: T): (value: mixed) => $Keys<T> {
-  return function matcher(value: mixed): $Keys<T> {
-    return plainMatch(matchBy, value)
-  }
-}
+export const remap: Remap = curry(function remap<
+  T: { [key: string]: Pred },
+  V,
+  M: { [key: $Keys<T>]: V }
+>(matchBy: T, mapper: M, value: mixed): V {
+  return mapper[match(matchBy, value)]
+})
 
-export function remap<
-    T: { [key: string]: Pred },
-    V,
-    M: { [key: $Keys<T>]: V }
-  >(matchBy: T) {
-  return function(mapper: M) {
-    return function(value: mixed): V {
-      return mapper[plainMatch(matchBy, value)]
-    }
-  }
-}
+export const choose: Remap = curry(function choose<
+  T: { [key: string]: Pred },
+  V,
+  //eslint-disable-next-line
+  M: { [key: $Keys<T>]: (val: mixed) => V }
+>(matchBy: T, mapper: M, value: mixed): V {
+  return mapper[match(matchBy, value)](value)
+})
 
 export default match

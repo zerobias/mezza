@@ -6,6 +6,11 @@ declare module 'mezza' {
     V,
     M extends { [key: string]: V }
   >(matchBy: T): (mapper: M) => (value: any) => V
+  export function choose<
+    T extends { [key: string]: Pred },
+    V,
+    M extends { [key: string]: (value: any) => V }
+  >(matchBy: T): (mapper: M) => (value: any) => V
   //eslint-disable-next-line
-  export default match
+  export default choose
 }

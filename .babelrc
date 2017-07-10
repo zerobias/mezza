@@ -2,8 +2,7 @@
   "presets": [
   ],
   "plugins": [
-    "transform-flow-strip-types",
-    "transform-class-properties",
+    "transform-flow-comments",
     ["transform-object-rest-spread", { "useBuiltIns": true }],
     ["transform-es2015-for-of", {
       "loose": true
@@ -11,8 +10,6 @@
     ["transform-es2015-block-scoping", {
       "throwIfClosureRequired": true
     }]
-    // ,"tailcall-optimization"
-    // ,"closure-elimination"
   ],
   "env": {
     "commonjs": {
