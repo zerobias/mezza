@@ -1,7 +1,6 @@
 //@flow
 
-import match, { choose } from './match'
+import { choose } from './curry'
 
-export { match }
-export { remap, choose } from './match'
+export { remap, choose, match } from './curry'
 export default choose

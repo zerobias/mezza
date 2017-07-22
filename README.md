@@ -55,6 +55,7 @@ printText({}) // => 'Oops, something going wrong!'
 ```
 
 Try this example in browser
+
 [![Edit Mezza example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/PEQDng3y)
 
 ## License
